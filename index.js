@@ -9,7 +9,7 @@ app.use(express.json());
 const PORT = 3000;
 
 app.listen(PORT, () => {
-    console.log('OK')
+    console.log('OK, server is running on port ' + PORT);
 })
 
 app.get('/', (req, res) => {
@@ -45,5 +45,20 @@ app.post('/products/add', (req, res) => {
     })
     res.status(200).json(newProduct);
 })
+
+app.delete('/products/delete/:id', (req, res) => {
+    const id = req.params.id;
+    const filteredProducts = products.filter(product => product.id == id)
+    if(filteredProducts.length === 0){
+        return res.status(204).json({message: "Product not found"});
+    }
+    const index = products.indexOf(filteredProducts[0]);
+    products.splice(index, 1);
+    fs.writeFile("./data/MOCK_DATA.json", JSON.stringify(products), (error) => {
+        if(error) res.status(500).json({message: 'internal error'})
+    })
+    res.status(200).json({message: "Product deleted"});
+})
+
 
 //console.log(products)

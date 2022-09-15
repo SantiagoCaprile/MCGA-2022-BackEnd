@@ -4,7 +4,7 @@ const Products = require('../schemes/products')
 router.get('/', (req, res) => {
     Products.find({isDeleted: false})
     .then(data => res.json(data))
-    .catch(error => res.status(500).json({message: error}))
+    .catch(error => res.status(400).json({message: error}))
 })
 
 router.get('/:name', (req, res) => {
@@ -16,7 +16,7 @@ router.get('/:name', (req, res) => {
         }
         return res.json(data)
     })
-    .catch(error => res.status(500).json({message: error}))
+    .catch(error => res.status(400).json({message: error}))
 })
 
 router.post('/add', (req, res) => {
@@ -24,7 +24,7 @@ router.post('/add', (req, res) => {
     newProduct
     .save()
     .then(data => res.status(200).json({message: "Product created", data}))
-    .catch(() => res.status(500).json({message: "Error"}))
+    .catch(() => res.status(400).json({message: "Error"}))
 })
 
 module.exports = router
